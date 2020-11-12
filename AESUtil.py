@@ -6,11 +6,11 @@ from Crypto.Cipher import AES
 
 
 class Prpcrypt():
-    def __init__(self):
+    def __init__(self, secret):
         # key值（密码）
-        self.key = '****************'.encode("utf-8")
+        self.key = secret.encode("utf-8")
         # vi偏移量
-        self.iv = '****************'.encode("utf-8")
+        self.iv = secret.encode("utf-8")
         self.mode = AES.MODE_CBC
         self.BS = AES.block_size
         self.pad = lambda s: s + (self.BS - len(s) % self.BS) * chr(self.BS - len(s) % self.BS)
@@ -33,7 +33,7 @@ class Prpcrypt():
 
 
 if __name__ == '__main__':
-    pc = Prpcrypt()  # 初始化密钥 和 iv
+    pc = Prpcrypt("aaaaaaaaaaaaaaaa")  # 初始化密钥 和 iv
     # text='access&a494fcbc-9aa1-4718-bd7d-a90d01211d97&0&2&'
     text = 'access&a494fcbc-9aa1-4718-bd7d-a90d01211d97&0&1&'
     # text='access&a494fcbc-9aa1-4718-bd7d-a90d01211d97&1&1&'
@@ -43,6 +43,6 @@ if __name__ == '__main__':
     # text='logout&'
     e = pc.encrypt(text + str(int(time.time() / 10)))  # 加密
     d = pc.decrypt(e)  # 解密
-    print("加密:%s" % e.decode("utf-8"))
-    print("解密:%s"% d)
-    print("长度:%s"% len(d))
+    print("加密: {}".format(e.decode("utf-8")))
+    print("解密: {}".format(d))
+    print("长度: {}".format(len(d)))
